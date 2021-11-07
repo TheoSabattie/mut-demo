@@ -4,7 +4,7 @@ import { IUpdatable, MathTools, OVector2, UpdateService } from "math-understandi
 import { KeyboardController } from "./KeyboardController";
 
 const TELEPORT_DURATION:number = 1;
-const JUMP_FORCE:number = 250;
+const JUMP_FORCE:number = 190;
 const JUMP_LINEAR_UP_DURATION:number = 0.5;
 const JUMP_LINEAR_DOWN_DURATION:number = 0.5;
 const JUMP_GRAVITY_IMPULSE:number = -750;
