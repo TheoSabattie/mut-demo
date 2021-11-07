@@ -3,7 +3,7 @@ import { IPointData } from "@pixi/math";
 import { IUpdatable, MathTools, OVector2, UpdateService } from "math-understanding-tools";
 import { KeyboardController } from "./KeyboardController";
 
-const TELEPORT_DURATION:number = 1;
+const TELEPORT_DURATION:number = .75;
 const JUMP_FORCE:number = 190;
 const JUMP_LINEAR_UP_DURATION:number = 0.5;
 const JUMP_LINEAR_DOWN_DURATION:number = 0.5;
