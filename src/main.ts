@@ -1,5 +1,5 @@
 import { Application } from  "pixi.js";
-import { EventTypes, Graphic, GraphicGrid, GraphicRectangle, GraphicVector, MathMapWindow, ORectTransform, OVector2, UpdateService } from  "math-understanding-tools";
+import { EventTypes, Graphic, GraphicGrid, GraphicRectangle, GraphicVector, MathMapWindow, MathTools, ORectTransform, OVector2, UpdateService } from  "math-understanding-tools";
 import { Graphics } from "pixi.js";
 import { sound, filters } from "@pixi/sound";
 import { KeyboardController } from "./KeyboardController";
@@ -34,10 +34,18 @@ UpdateService.add(gameloop);
 function gameloop():void {
     if (keyboardController.isJustDown("ArrowRight")){
         player.mode = (player.mode + 1) %5;
+        gsap.from(mathMapWindow.fillStyle, {onUpdate:function(){
+            mathMapWindow.fillStyle.color = MathTools.lerpColor(0xFFFFFF, 0, this.progress());
+        }});
     } else if (keyboardController.isJustDown("ArrowLeft")){
         player.mode = ((player.mode - 1)+5)%5;
+        gsap.from(mathMapWindow.fillStyle, {onUpdate:function(){
+            mathMapWindow.fillStyle.color = MathTools.lerpColor(0xFFFFFF, 0, this.progress());
+        }});
     }
 }
+
+
 
 let player = new Player(keyboardController);
 player.x = -150;

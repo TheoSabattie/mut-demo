@@ -1,5 +1,6 @@
 import { Graphics } from "@pixi/graphics";
 import { IPointData } from "@pixi/math";
+import { sound } from "@pixi/sound";
 import { IUpdatable, MathTools, OVector2, UpdateService } from "math-understanding-tools";
 import { KeyboardController } from "./KeyboardController";
 
@@ -18,6 +19,25 @@ const SQUASH_JUMP_RECEIPT_SPEED:number = 8;
 const GRAVITY:number = 1500;
 const TRAIL_SIZE:number = 60;
 const TRAIL_WIDTH:number = 30;
+
+const JUMP_SOUNDS = [
+    sound.add("jump0", "jump.wav"),
+    sound.add("jump3", "jump3.wav"),
+    sound.add("jump4", "jump4.wav"),
+];
+
+const RECEIPT_SOUND = sound.add("receipt", "receipt.wav");
+
+let jumpSoundSet = JUMP_SOUNDS.slice();
+
+function playJumpSound(){
+    if (jumpSoundSet.length == 0)
+        jumpSoundSet = JUMP_SOUNDS.slice();
+
+    let lRandomIndex:number = Math.floor(jumpSoundSet.length * Math.random());
+    jumpSoundSet[lRandomIndex].play();
+    jumpSoundSet.splice(lRandomIndex, 1);
+}
 
 export enum PlayerMode {
     TELEPORT = 0,
@@ -93,7 +113,7 @@ export class Player extends Graphics implements IUpdatable {
             this.scale.set(lScale.x, lScale.y);
         }
 
-        if (this._keyboardController.isJustDown("Space")){
+        if (this._keyboardController.isDown("Space")){
             this._setModeJumpDown();
         }
     }
@@ -107,12 +127,14 @@ export class Player extends Graphics implements IUpdatable {
         this._yVelocity = JUMP_GRAVITY_IMPULSE;
         this._fromY = this.y;
         this._toY = this.y - JUMP_FORCE;
+        playJumpSound();
         this._resetElapsedTime();
         this._doAction = this._doActionJump;
     }
 
     private _setModeReceipt():void {
         this._resetElapsedTime();
+        RECEIPT_SOUND.play();
         this._doAction = this._doActionReceipt;
     }
 
@@ -149,7 +171,7 @@ export class Player extends Graphics implements IUpdatable {
             this.scale.set(lScale.x, lScale.y);
         }
 
-        if (this._keyboardController.isJustUp("Space")){
+        if (this._keyboardController.isUp("Space")){
             this._setModeJump();
         }
     }
